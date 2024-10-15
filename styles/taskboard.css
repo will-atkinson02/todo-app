@@ -1,0 +1,36 @@
+body {
+    /* Display */
+    margin: 0;
+
+    /* Colour */
+    color: white;
+    background-color: black;
+}
+
+header {
+    /* Display */
+    display: grid;
+    grid-template-columns: 4fr 2fr 2fr 1fr 1fr;
+    align-items: center;
+    border-bottom: 1px white solid;
+
+}
+
+.title {
+    /* Display */
+    padding-left: 20px;
+}
+
+.new-stage-container {
+    /* Display */
+    display: flex;
+    align-items: center;
+    width: 200px;
+    height: 30px;
+    border-radius: 10px;
+    padding-left: 5px;
+
+    /* Colour */
+    color: black;
+    background-color: white;
+}

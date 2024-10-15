@@ -26,10 +26,10 @@ $user = $usersModel->getUserById(1);
 <body>
     <header>
         <h3 class="title">My To-Do List</h3>
-        <a href="taskboard">New Taskboard</a>
-        <a>View Taskboards</a>
-        <a>Login</a>
-        <a>Home</a>
+        <a href="taskboard.php">New Taskboard</a>
+        <a href="viewTaskboards.php">View Taskboards</a>
+        <a href="login.php">Login</a>
+        <a href="index.php">Home</a>
     </header>
     <h1>Welcome <?php echo $user->getUsername(); ?> to your home page!<h1>
     <div class="notifications-and-due">
