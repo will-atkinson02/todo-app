@@ -21,6 +21,7 @@ header {
     padding-left: 20px;
 }
 
+
 .new-stage-container {
     /* Display */
     display: flex;
@@ -33,4 +34,31 @@ header {
     /* Colour */
     color: black;
     background-color: white;
+}
+
+.new-stage-container:hover {
+    /* Colour */
+    color: black;
+    background-color: rgb(159, 158, 158);
+}
+
+.new-stage-expanded-container {
+    /* Display */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 200px;
+    height: 60px;
+    border-radius: 10px;
+    padding-left: 5px;
+
+    /* Colour */
+    color: black;
+    background-color: white;
+}
+
+.hidden {
+    /* Display */
+    display: none;
 }

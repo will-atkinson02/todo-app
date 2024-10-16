@@ -10,6 +10,7 @@
     <title>Taskboard</title>
 
     <link rel="stylesheet" href="styles/taskboard.css">
+    <script src="scripts/taskboardScripts.js" defer></script>
 </head>
 <body>
     <header>
@@ -21,6 +22,13 @@
     </header>
     <div class="new-stage-container">
         <p>+ New stage</p>
+    </div>
+    <div class="new-stage-expanded-container hidden">
+        <input type="text" placeholder="Enter stage name...">
+        <div>
+            <button>Add stage</button>
+            <button>x</button>
+        </div>
     </div>
 </body>
 </html>
