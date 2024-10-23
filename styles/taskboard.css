@@ -21,6 +21,10 @@ header {
     padding-left: 20px;
 }
 
+.container-container{
+    /* Display */
+    display: flex;
+}
 
 .new-stage-container {
     /* Display */
@@ -29,7 +33,6 @@ header {
     width: 200px;
     height: 30px;
     border-radius: 10px;
-    padding-left: 5px;
 
     /* Colour */
     color: black;
@@ -41,6 +44,11 @@ header {
     color: black;
     background-color: rgb(159, 158, 158);
 }
+
+i {
+    /* Display */
+    padding-left: 5px;
+} 
 
 .new-stage-expanded-container {
     /* Display */
@@ -56,6 +64,23 @@ header {
     /* Colour */
     color: black;
     background-color: white;
+}
+
+.stage {
+    /* Display */
+    align-items: center;
+    width: 200px;
+    border-radius: 10px;
+
+    /* Colour */
+    color: black;
+    background-color: white;
+}
+
+.name-and-delete {
+    /* Display */
+    display: flex;
+    justify-content: space-around;
 }
 
 .hidden {
