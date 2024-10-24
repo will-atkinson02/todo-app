@@ -10,24 +10,33 @@ class StagesModel {
         $this->db = $db;
     }
 
-    public function getTaskboardsStages(): array 
+    public function getTaskboardsStages(int $taskboardId): array 
     {
         $query = $this->db->prepare('SELECT `id`, `stage_name`, `taskboard_id` FROM `stages` 
-        WHERE `taskboard_id` = 1');
+        WHERE `taskboard_id` = :taskboardId');
         $query->setFetchMode(PDO::FETCH_CLASS, Stage::class);
-        $query->execute();
+        $query->execute(['taskboardId' => $taskboardId]);
         return $query->fetchAll();
     }
 
-    public function addNewStage(string $stageName): bool
+    public function getStageByName(string $stageName): array
     {
-        $query = $this->db->prepare('INSERT INTO `stages` (`stage_name`) VALUES (:stageName)');
-        return $query->execute(['stageName' => $stageName]);
+        $query = $this->db->prepare('SELECT `id`, `stage_name`, `taskboard_id` FROM `stages` 
+        WHERE `stage_name` = :stageName');
+        $query->setFetchMode(PDO::FETCH_CLASS, Stage::class);
+        $query->execute(['stageName' => $stageName]);
+        return $query->fetchAll();
+    }
+
+    public function addNewStage(string $stageName, int $taskboardId): bool
+    {
+        $query = $this->db->prepare('INSERT INTO `stages` (`stage_name`, `taskboard_id`) VALUES (:stageName, :taskboardId)');
+        return $query->execute(['stageName' => $stageName, 'taskboardId' => $taskboardId]);
     }  
 
-    public function deleteStage(): bool
+    public function deleteStage(string $stageName): bool
     {
-        $query = $this->db->prepare("DELETE FROM `stages` WHERE `stage_name` = 'chungus2';");
-        return $query->execute();
+        $query = $this->db->prepare("DELETE FROM `stages` WHERE `stage_name` = :stageName;");
+        return $query->execute(['stageName' => $stageName]);
     }
 }

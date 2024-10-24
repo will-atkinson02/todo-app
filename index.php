@@ -10,7 +10,21 @@ $db = DatabaseConnector::connect();
 
 $usersModel = new UsersModel($db);
 
-$user = $usersModel->getUserById(1);
+session_start();
+
+if(isset($_POST['logout'])) {
+    $_SESSION['loggedIn'] = false;
+    session_destroy();
+    header("Location: index.php");
+}
+
+if(isset($_SESSION['loggedIn'])) {
+    //$addNewPost = "<div class='add-new-container'><a href='CreateNewPost.php'> <span>+</span> Add new post</a></div>";
+    $logout = "<form method='post'><input type='submit' name='logout' value='logout'/></form>";
+    $user = $usersModel->getUserById($_SESSION['uid']);
+} else {
+    $login = "<a href='login.php'>Login</a>";
+}
 
 ?>
 
@@ -28,10 +42,25 @@ $user = $usersModel->getUserById(1);
         <h3 class="title">My To-Do List</h3>
         <a href="taskboard.php">New Taskboard</a>
         <a href="viewTaskboards.php">View Taskboards</a>
-        <a href="login.php">Login</a>
+        <?php $login;
+        
+        if (isset($_SESSION['loggedIn'])) {
+            echo $logout;
+        } else {
+            echo $login;
+            echo "<a href='Registration.php'><input type='submit' value='Sign up'/></a>";
+        }
+
+        ?> 
         <a href="index.php">Home</a>
     </header>
-    <h1>Welcome <?php echo $user->getUsername(); ?> to your home page!<h1>
+    <h1>Welcome <?php 
+
+    if (isset($_SESSION['loggedIn'])) {
+        echo $user->getUsername(); 
+    }
+    
+    ?> to your home page!<h1>
     <div class="notifications-and-due">
         <div class="notifications-container">
             <div class="info-box title-box">Notifications:</div>

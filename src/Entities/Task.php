@@ -6,7 +6,7 @@ class Task {
     private string $description;
     private int $state;
     private string $colour;
-    private int $userId;
+    private int $stageId;
     private string $dateCreated;
     private string $dueDate;
 
@@ -35,9 +35,9 @@ class Task {
         return $this->colour;
     }
 
-    public function getUserId(): string
+    public function getStageId(): string
     {
-        return $this->userId;
+        return $this->stageId;
     }
 
     public function getDateCreated(): string

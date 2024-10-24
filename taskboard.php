@@ -1,23 +1,74 @@
 <?php
 
 require_once 'src/Models/StagesModel.php';
+require_once 'src/Models/TasksModel.php';
 require_once 'src/Entities/Stage.php';
+require_once 'src/Entities/Task.php';
 require_once 'src/Services/DatabaseConnector.php';
 
 $db = DatabaseConnector::connect();
 
 $stagesModel = new StagesModel($db);
+$tasksModel = new TasksModel($db);
 
-if ($_POST['stageName'] != '') {
-    $stagesModel->addNewStage($_POST['stageName']);
+session_start();
+
+$taskboardId = (int)$_GET['id'];
+
+if (array_key_exists('stageName', $_POST)) {
+    if ($_POST['stageName'] != '') {
+        $allStages = $stagesModel->getTaskboardsStages($taskboardId);
+    
+        $found = false;
+    
+        foreach ($allStages as $stage) {
+            if ($_POST['stageName'] === $stage->stageName()) {
+                $found = true;
+            }
+        }
+        
+        if ($found === false) {
+            $stagesModel->addNewStage($_POST['stageName'], $taskboardId);
+        }
+    }
+}
+
+if (array_key_exists('taskName', $_POST)) {
+    if ($_POST['taskName'] != '') {
+        $allTasks = $tasksModel->getStagesTasks($stageId);
+    
+        $found = false;
+    
+        foreach ($allTasks as $task) {
+            if ($_POST['taskName'] === $task->taskName()) {
+                $found = true;
+            }
+        }
+        
+        if ($found === false) {
+            $tasksModel->addNewTask($_POST['taskName'], $stageId);
+        }
+    }
 }
 
 if (isset($_POST)) {
-     $stagesModel->deleteStage();
-}
+    $key = array_search('deleteStage', $_POST);
+    $keyFormatted = str_replace('_', ' ', $key);
 
-// echo '<pre>';
-// var_dump($_POST);
+    $stageName= $stagesModel->getStageByName($key);
+    
+    if ($stageName[0]) {
+        $tasks = $tasksModel->getStagesTasks($stageName[0]->getId());
+
+        foreach ($tasks as $task) {
+            $tasksModel->deleteTask($task->getName());
+        }
+
+        
+    }
+
+    $stagesModel->deleteStage($keyFormatted); 
+}
 
 ?>
 
@@ -42,14 +93,30 @@ if (isset($_POST)) {
 
     <div class="container-container">
         <?php
-        $allStages = $stagesModel->getTaskboardsStages();
+
+        $allStages = $stagesModel->getTaskboardsStages($taskboardId);
+
+        $stages = '';
 
         foreach ($allStages as $stage) {
             $name = $stage->stageName();
-            echo $name;
-            echo "<div class='stage'><form method='POST' class='name-and-delete'><div>$name</div><input name='$name' type='submit' value='delete'></form><div>Add Card</div></div>";
+            $stages .= "<div class='stage'><form method='POST' class='name-and-delete'><div>$name</div><input name='$name' type='submit' value='deleteStage'></form>";
+            
+            $allTasks = $tasksModel->getStagesTasks($stage->getId());
+
+            // echo '<pre>';
+            // var_dump($allTasks);    
+
+            foreach ($allTasks as $task) {
+                $taskName = $task->getName();
+                $stages .= "<div>$taskName</div>";
+            }
+            
+            $stages .= "<div>Add Card</div></div>";
         }
 
+        echo $stages;
+    
         ?>
 
 
