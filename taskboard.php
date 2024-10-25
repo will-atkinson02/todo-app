@@ -35,18 +35,24 @@ if (array_key_exists('stageName', $_POST)) {
 
 if (array_key_exists('taskName', $_POST)) {
     if ($_POST['taskName'] != '') {
-        $allTasks = $tasksModel->getStagesTasks($stageId);
-    
+
+        var_dump($_POST);
+
+        $stageIdKey = array_search('Add task', $_POST);
+
+
+        $allTasks = $tasksModel->getStagesTasks($stageIdKey);
+        
         $found = false;
     
         foreach ($allTasks as $task) {
-            if ($_POST['taskName'] === $task->taskName()) {
+            if ($_POST['taskName'] === $task->getName()) {
                 $found = true;
             }
         }
         
         if ($found === false) {
-            $tasksModel->addNewTask($_POST['taskName'], $stageId);
+            $tasksModel->addNewTask($_POST['taskName'], $stageIdKey);
         }
     }
 }
@@ -57,14 +63,12 @@ if (isset($_POST)) {
 
     $stageName= $stagesModel->getStageByName($key);
     
-    if ($stageName[0]) {
+    if (array_key_exists(0, $stageName)) {
         $tasks = $tasksModel->getStagesTasks($stageName[0]->getId());
 
         foreach ($tasks as $task) {
             $tasksModel->deleteTask($task->getName());
         }
-
-        
     }
 
     $stagesModel->deleteStage($keyFormatted); 
@@ -102,23 +106,33 @@ if (isset($_POST)) {
             $name = $stage->stageName();
             $stages .= "<div class='stage'><form method='POST' class='name-and-delete'><div>$name</div><input name='$name' type='submit' value='deleteStage'></form>";
             
-            $allTasks = $tasksModel->getStagesTasks($stage->getId());
+            $stageId = $stage->getId();
+
+            $allTasks = $tasksModel->getStagesTasks($stageId);
 
             // echo '<pre>';
             // var_dump($allTasks);    
+            
 
             foreach ($allTasks as $task) {
                 $taskName = $task->getName();
                 $stages .= "<div>$taskName</div>";
             }
             
-            $stages .= "<div>Add Card</div></div>";
+            $stages .= "<div class='add-task-container'>Add Card</div><form class='add-task-expanded-container hidden' method='POST'>
+                <input class='task-name-input' type='text' name='taskName' placeholder='Enter task name...'>
+                <div>
+                    <input class='task-name-submit' name='$stageId' value='Add task' type='submit'>
+                    <button>x</button>
+                </div>
+            </form>
+        </div>";
         }
 
         echo $stages;
     
         ?>
-
+        <!-- HERE! -->
 
         <div class="new-stage-container">
             <i>+</i> New stage

@@ -3,12 +3,12 @@
 class Task {
     private int $id;
     private string $name;
-    private string $description;
-    private int $state;
-    private string $colour;
-    private int $stageId;
-    private string $dateCreated;
-    private string $dueDate;
+    private string|NULL $description;
+    private int|NULL $state;
+    private string|NULL $colour;
+    private int|NULL $stageId;
+    private string|NULL $dateCreated;
+    private string|NULL $dueDate;
 
     public function getId(): int
     {
