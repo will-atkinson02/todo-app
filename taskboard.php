@@ -15,36 +15,6 @@ session_start();
 
 $taskboardId = (int)$_GET['id'];
 
-$requestMethod = $_SERVER['REQUEST_METHOD'];
-
-if ($requestMethod === 'POST') {
-    // Handle POST request
-} elseif ($requestMethod === 'GET') {
-    // Handle GET request
-} elseif ($requestMethod === 'PUT') {
-    // Handle PUT request
-} elseif ($requestMethod === 'DELETE') {
-    $stageToDelete = json_decode(file_get_contents('php://input'), true);
-    
-    $stageName = $stageToDelete['stageName'];
-
-    if ($stageName) {
-        $stageNameObject = $stagesModel->getStageByName($stageName);
-    
-        if (array_key_exists(0, $stageNameObject)) {
-            $tasks = $tasksModel->getStagesTasks($stageName[0]->getId());
-
-            foreach ($tasks as $task) {
-                $tasksModel->deleteTask($task->getName());
-            }
-        }
-
-        $stagesModel->deleteStage($keyFormatted); 
-    }
-}
-
-
-
 if (array_key_exists('stageName', $_POST)) {
     if ($_POST['stageName'] != '') {
         $allStages = $stagesModel->getTaskboardsStages($taskboardId);
@@ -65,11 +35,7 @@ if (array_key_exists('stageName', $_POST)) {
 
 if (array_key_exists('taskName', $_POST)) {
     if ($_POST['taskName'] != '') {
-
-        var_dump($_POST);
-
         $stageIdKey = array_search('Add task', $_POST);
-
 
         $allTasks = $tasksModel->getStagesTasks($stageIdKey);
         
@@ -87,22 +53,22 @@ if (array_key_exists('taskName', $_POST)) {
     }
 }
 
-// if (isset($_POST)) {
-//     $key = array_search('deleteStage', $_POST);
-//     $keyFormatted = str_replace('_', ' ', $key);
+if (isset($_POST)) {
+    $key = array_search('deleteStage', $_POST);
+    $keyFormatted = str_replace('_', ' ', $key);
 
-//     $stageName = $stagesModel->getStageByName($key);
+    $stageName = $stagesModel->getStageByName($key);
     
-//     if (array_key_exists(0, $stageName)) {
-//         $tasks = $tasksModel->getStagesTasks($stageName[0]->getId());
+    if (array_key_exists(0, $stageName)) {
+        $tasks = $tasksModel->getStagesTasks($stageName[0]->getId());
 
-//         foreach ($tasks as $task) {
-//             $tasksModel->deleteTask($task->getName());
-//         }
-//     }
+        foreach ($tasks as $task) {
+            $tasksModel->deleteTask($task->getName());
+        }
+    }
 
-//     $stagesModel->deleteStage($keyFormatted); 
-// }
+    $stagesModel->deleteStage($keyFormatted); 
+}
 
 ?>
 
