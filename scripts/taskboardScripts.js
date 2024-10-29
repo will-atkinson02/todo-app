@@ -1,55 +1,41 @@
-
 const newStage = document.querySelector('.new-stage-container')
-const newStageI = document.querySelector('i')
 const newStageExpanded = document.querySelector('.new-stage-expanded-container')
-const newStageExpandedInput = document.querySelector('.stage-name-input')
-// const newStageExpandedSubmit = document.querySelector('.stage-name-submit')
-
-const newTask = document.querySelector('.add-task-container')
-const newTaskExpanded = document.querySelector('.add-task-expanded-container')
-const newTaskExpandedInput = document.querySelector('.task-name-input')
 
 window.addEventListener("click", (event) => {
-    if (newStage === event.target || newStageI === event.target) {
+    const newStageClicked = event.target.closest('.new-stage-container')
+    const newStageExpandedClicked = event.target.closest('.new-stage-expanded-container')
+
+    if (newStageClicked) {
         newStage.classList.add('hidden')
         newStageExpanded.classList.remove('hidden')
-    } else if (newStageExpanded != event.target && newStageExpandedInput != event.target) {
+    } else if (!newStageExpandedClicked) {
         newStage.classList.remove('hidden')
         newStageExpanded.classList.add('hidden')
     }
 
-    document.querySelectorAll('.add-task-container').forEach(div => {
-        div.addEventListener('click', function(event) {
-            if (div === event.target) {
+    const inAddTaskExpanded = event.target.closest('.add-task-expanded-container')
+
+    if (event.target.classList.contains('add-task-container')) {
+        const stageClosest = event.target.closest('.stage')
+
+        const newTask = stageClosest.querySelector('.add-task-container')
+        const newTaskExpanded = stageClosest.querySelector('.add-task-expanded-container')
+
+        document.querySelectorAll('.stage').forEach(stage => {
+            if (stage.querySelector('.add-task-container') != newTask) {
+                stage.querySelector('.add-task-container').classList.remove('hidden')
+                stage.querySelector('.add-task-expanded-container').classList.add('hidden')
+            } else {
                 newTask.classList.add('hidden')
                 newTaskExpanded.classList.remove('hidden')
-            } 
+            }
         })
-    })
 
-    // if (newTask === event.target) {
-    //     newTask.classList.add('hidden')
-    //     newTaskExpanded.classList.remove('hidden')
-    // } else if (newTaskExpanded != event.target && newTaskExpandedInput != event.target) {
-    //     newTask.classList.remove('hidden')
-    //     newTaskExpanded.classList.add('hidden')
-    //}
+    } else if (!inAddTaskExpanded) {  
+        document.querySelectorAll('.stage').forEach(stage => {
+            stage.querySelector('.add-task-container').classList.remove('hidden')
+            stage.querySelector('.add-task-expanded-container').classList.add('hidden')
+        })
+    }
 })
 
-document.querySelectorAll('.add-task-container').forEach(div => {
-    div.addEventListener('click', function(event) {
-        if (div === event.target) {
-            newTask.classList.add('hidden')
-            newTaskExpanded.classList.remove('hidden')
-        } 
-    })
-})
-
-document.querySelectorAll('.add-task-expanded-container').forEach(divExpanded => {
-    divExpanded.addEventListener('click', function(event) {
-        if (divExpanded != event.target) {
-            newTask.classList.remove('hidden')
-            newTaskExpanded.classList.add('hidden')
-        }
-    })
-})
