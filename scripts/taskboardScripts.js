@@ -1,3 +1,14 @@
+function deleteStage(stageToDelete) {
+    fetch('taskboard.php', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({stageName: stageToDelete})
+    })
+}
+
+
 const newStage = document.querySelector('.new-stage-container')
 const newStageExpanded = document.querySelector('.new-stage-expanded-container')
 
@@ -36,6 +47,18 @@ window.addEventListener("click", (event) => {
             stage.querySelector('.add-task-container').classList.remove('hidden')
             stage.querySelector('.add-task-expanded-container').classList.add('hidden')
         })
+    }
+
+    if (event.target.classList.contains('deleteStage')) {
+        const stageClosest = event.target.closest('.stage')
+        const nameContainerClosest = event.target.closest('name-and-delete')
+        const nameClosest = nameContainerClosest.querySelector('div').textContent
+        
+        //stageClosest.remove()
+        console.log('removed!')
+        //console.log(deleteStage(nameClosest))
+        //deleteStage(nameClosest)
+        
     }
 })
 

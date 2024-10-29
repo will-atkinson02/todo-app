@@ -15,6 +15,36 @@ session_start();
 
 $taskboardId = (int)$_GET['id'];
 
+$requestMethod = $_SERVER['REQUEST_METHOD'];
+
+if ($requestMethod === 'POST') {
+    // Handle POST request
+} elseif ($requestMethod === 'GET') {
+    // Handle GET request
+} elseif ($requestMethod === 'PUT') {
+    // Handle PUT request
+} elseif ($requestMethod === 'DELETE') {
+    $stageToDelete = json_decode(file_get_contents('php://input'), true);
+    
+    $stageName = $stageToDelete['stageName'];
+
+    if ($stageName) {
+        $stageNameObject = $stagesModel->getStageByName($stageName);
+    
+        if (array_key_exists(0, $stageNameObject)) {
+            $tasks = $tasksModel->getStagesTasks($stageName[0]->getId());
+
+            foreach ($tasks as $task) {
+                $tasksModel->deleteTask($task->getName());
+            }
+        }
+
+        $stagesModel->deleteStage($keyFormatted); 
+    }
+}
+
+
+
 if (array_key_exists('stageName', $_POST)) {
     if ($_POST['stageName'] != '') {
         $allStages = $stagesModel->getTaskboardsStages($taskboardId);
@@ -57,22 +87,22 @@ if (array_key_exists('taskName', $_POST)) {
     }
 }
 
-if (isset($_POST)) {
-    $key = array_search('deleteStage', $_POST);
-    $keyFormatted = str_replace('_', ' ', $key);
+// if (isset($_POST)) {
+//     $key = array_search('deleteStage', $_POST);
+//     $keyFormatted = str_replace('_', ' ', $key);
 
-    $stageName= $stagesModel->getStageByName($key);
+//     $stageName = $stagesModel->getStageByName($key);
     
-    if (array_key_exists(0, $stageName)) {
-        $tasks = $tasksModel->getStagesTasks($stageName[0]->getId());
+//     if (array_key_exists(0, $stageName)) {
+//         $tasks = $tasksModel->getStagesTasks($stageName[0]->getId());
 
-        foreach ($tasks as $task) {
-            $tasksModel->deleteTask($task->getName());
-        }
-    }
+//         foreach ($tasks as $task) {
+//             $tasksModel->deleteTask($task->getName());
+//         }
+//     }
 
-    $stagesModel->deleteStage($keyFormatted); 
-}
+//     $stagesModel->deleteStage($keyFormatted); 
+// }
 
 ?>
 
@@ -104,7 +134,7 @@ if (isset($_POST)) {
 
         foreach ($allStages as $stage) {
             $name = $stage->stageName();
-            $stages .= "<div class='stage'><form method='POST' class='name-and-delete'><div>$name</div><input name='$name' type='submit' value='deleteStage'></form>";
+            $stages .= "<div class='stage'><form method='POST' class='name-and-delete'><div>$name</div><input class='deleteStage' name='$name' type='submit' value='deleteStage'></form>";
             
             $stageId = $stage->getId();
 
