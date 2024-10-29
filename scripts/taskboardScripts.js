@@ -1,13 +1,16 @@
-function deleteStage(stageToDelete) {
-    fetch('taskboard.php', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({stageName: stageToDelete})
-    })
-}
-
+function allowDrop(ev) {
+    ev.preventDefault();
+  }
+  
+  function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+  }
+  
+  function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+  }
 
 const newStage = document.querySelector('.new-stage-container')
 const newStageExpanded = document.querySelector('.new-stage-expanded-container')

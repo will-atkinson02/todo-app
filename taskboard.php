@@ -100,7 +100,7 @@ if (isset($_POST)) {
 
         foreach ($allStages as $stage) {
             $name = $stage->stageName();
-            $stages .= "<div class='stage'><form method='POST' class='name-and-delete'><div>$name</div><input class='deleteStage' name='$name' type='submit' value='deleteStage'></form>";
+            $stages .= "<div class='stage' ondrop='drop(event)' ondragover='allowDrop(event)'><form method='POST' class='name-and-delete'><div>$name</div><input class='deleteStage' name='$name' type='submit' value='deleteStage'></form>";
             
             $stageId = $stage->getId();
 
@@ -112,7 +112,8 @@ if (isset($_POST)) {
 
             foreach ($allTasks as $task) {
                 $taskName = $task->getName();
-                $stages .= "<div>$taskName</div>";
+                $taskId = $task->getId();
+                $stages .= "<div id=$taskId draggable='true' ondragstart='drag(event)'>$taskName</div>";
             }
             
             $stages .= "<div class='add-task-container'>Add Card</div><form class='add-task-expanded-container hidden' method='POST'>
