@@ -41,15 +41,32 @@ document.querySelectorAll('.task').forEach(task => {
     // })
 })
 
-window.addEventListener('dragover', (event) => {
-    if (event.target.id !== elementId && !event.target.classList.contains('drop-placeholder-task')) {
-            removeTaskDropArea(event.target.id)
+window.addEventListener('dragenter', (event) => {
+    if ((event.target.classList.contains('stage') || 
+        event.target.classList.contains('name-and-delete') ||
+        event.target.classList.contains('add-task-container')) &&
+        document.querySelector('.drop-target') != null) {
+        
+        const dropzoneDiv = document.createElement("div");
+
+        dropzoneDiv.classList.add('drop-placeholder-task')
+
+        const dropTarget = event.target.querySelector(".drop-target")
+        
+        console.log(dropzoneDiv)
+
+        dropTarget.appendChild(dropzoneDiv)
     }
+
+    if (event.target.id !== elementId && !event.target.classList.contains('drop-placeholder-task')) {
+        removeTaskDropArea(event.target.id)
+    }
+
 })
 
 function addTaskDropArea(elementId) {
     if (isDragging) {
-        const dropzoneDiv = document.createElement("div");
+        const dropzoneDiv = document.createElement("div")
 
         dropzoneDiv.classList.add('drop-placeholder-task')
 
