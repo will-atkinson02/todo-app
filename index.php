@@ -61,21 +61,5 @@ if(isset($_SESSION['loggedIn'])) {
     }
     
     ?> to your home page!<h1>
-    <div class="notifications-and-due">
-        <div class="notifications-container">
-            <div class="info-box title-box">Notifications:</div>
-            <div class="info-box">Story 3 in Taskboard 4 edited at 13:43</div>
-            <div class="info-box">New Task "Create front-end" added to Taskboard 1</div>
-            <div class="info-box">New Task "Story 6" added to Taskboard 2</div>
-            <div class="info-box">Task "Story 1" moved to Completed on Taskboard 1</div>
-        </div>
-        <div class="notifications-container">
-            <div class="info-box title-box">Due soon:</div>
-            <div class="info-box">Story 3 in Taskboard 4</div>
-            <div class="info-box">Story 5 in Taskboard 4</div>
-            <div class="info-box">Story 5 in Taskboard 1</div>
-            <div class="info-box">Story 6 in Taskboard 1</div>
-        </div>
-    </div>
 </body>
 </html>

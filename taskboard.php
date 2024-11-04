@@ -100,7 +100,7 @@ if (isset($_POST)) {
 
         foreach ($allStages as $stage) {
             $name = $stage->stageName();
-            $stages .= "<div class='stage' ondrop='drop(event)' ondragover='allowDrop(event)'><form method='POST' class='name-and-delete'><div>$name</div><input class='deleteStage' name='$name' type='submit' value='deleteStage'></form>";
+            $stages .= "<div class='stage' ondrop='drop(event)' ondragover='allowDrop(event)'><form method='POST' class='name-and-delete'><div>$name</div><input class='deleteStage' name='$name' type='submit' value='deleteStage'></form><div class='drop-target'>";
             
             $stageId = $stage->getId();
 
@@ -113,10 +113,10 @@ if (isset($_POST)) {
             foreach ($allTasks as $task) {
                 $taskName = $task->getName();
                 $taskId = $task->getId();
-                $stages .= "<div id=$taskId draggable='true' ondragstart='drag(event)'>$taskName</div>";
+                $stages .= "<div class='task' id=$taskId onmouseenter='addTaskDropArea($taskId)' draggable='true' ondragstart='drag(event)'><div class='task-text'>$taskName</div></div>";
             }
             
-            $stages .= "<div class='add-task-container'>Add Card</div><form class='add-task-expanded-container hidden' method='POST'>
+            $stages .= "</div><div class='add-task-container'>+ Add Card</div><form class='add-task-expanded-container hidden' method='POST'>
                 <input class='task-name-input' type='text' name='taskName' placeholder='Enter task name...'>
                 <div>
                     <input class='task-name-submit' name='$stageId' value='Add task' type='submit'>
@@ -129,7 +129,6 @@ if (isset($_POST)) {
         echo $stages;
     
         ?>
-        <!-- HERE! -->
 
         <div class="new-stage-container">
             <i>+</i> New stage
