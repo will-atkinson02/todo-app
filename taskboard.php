@@ -113,7 +113,7 @@ if (isset($_POST)) {
             foreach ($allTasks as $task) {
                 $taskName = $task->getName();
                 $taskId = $task->getId();
-                $stages .= "<div class='task' id=$taskId onmouseenter='addTaskDropArea($taskId)' draggable='true' ondragstart='drag(event)'><div class='task-text'>$taskName</div></div>";
+                $stages .= "<div class='task' id=$taskId draggable='true' ondragstart='drag(event)'><div class='task-text'>$taskName</div></div>";
             }
             
             $stages .= "</div><div class='add-task-container'>+ Add Card</div><form class='add-task-expanded-container hidden' method='POST'>
