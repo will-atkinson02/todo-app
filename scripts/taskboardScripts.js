@@ -1,15 +1,3 @@
-// if hovering over card:
-//     then create space where card was and move down
-//     if dropped:
-//         delete space and put card there
-// else if hovering over container but not card:
-//     then create space at the bottom
-//     if dropped:
-//         put card at bottom
-
-// idea 2
-// if card is below card:
-//     then move lower card up and create space where it was.
 
 function isBefore(element1, element2) {
     return element1.compareDocumentPosition(element2) & Node.DOCUMENT_POSITION_FOLLOWING;
