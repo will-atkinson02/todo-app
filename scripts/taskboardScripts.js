@@ -54,8 +54,6 @@ function allowDrop(event) {
 function drag(event) {
     isDragging = true
     event.dataTransfer.setData("text", event.target.id)
-
-    console.log(event)
 }
 
 function drop(event) {
@@ -74,11 +72,23 @@ document.querySelectorAll('.task').forEach(task => {
     task.addEventListener('dragstart', (event) => {
         elementId = event.target.id
         draggedTask = document.getElementById(elementId)
+
         isDragging = true
     })
 
     task.addEventListener('dragend', () => {
+        const placeholder = document.querySelector('.drop-placeholder-task')
+        placeholder.insertAdjacentElement('afterend', draggedTask)
+        placeholder.remove()
+
         isDragging = false
+    })
+
+    task.addEventListener('drag', (event) => {
+        if (event.target.id === elementId) {
+            addTaskDropArea(elementId)
+            draggedTask.remove()
+        }
     })
 
     task.addEventListener('dragenter', (event) => {
@@ -90,40 +100,73 @@ document.querySelectorAll('.task').forEach(task => {
             }
             
             if (!document.querySelector('.drop-placeholder-task')) {
-                if (isBefore(document.getElementById(elementId), taskBelow)) {
-                    if (document.getElementById(elementId).nextSibling === taskBelow) {
-                        taskBelow.closest('.drop-target').insertBefore(taskBelow, document.getElementById(elementId))
-                        addTaskDropArea(elementId)
-                        draggedTask.remove()
-                    } else {
-                        addTaskDropAreaAfter(taskBelow.id)
-                        draggedTask.remove()
-                    }
-                } else if (isAfter(document.getElementById(elementId), taskBelow)) {
-                    if (document.getElementById(elementId).previousSibling === taskBelow) {
-                        addTaskDropArea(taskBelow.id)
-                        draggedTask.remove()
-                    } else {
-                        addTaskDropArea(taskBelow.id)
-                        draggedTask.remove()
+                if (!document.getElementById(elementId).closest('.stage').contains(taskBelow)) {
+                    addTaskDropArea(taskBelow.id)
+                } else {
+                    if (isBefore(document.getElementById(elementId), taskBelow)) {
+                        if (document.getElementById(elementId).nextSibling === taskBelow) {
+                            taskBelow.closest('.drop-target').insertBefore(taskBelow, document.getElementById(elementId))
+                            addTaskDropArea(elementId)
+                            draggedTask.remove()
+                        } else {
+                            addTaskDropAreaAfter(taskBelow.id)
+                            draggedTask.remove()
+                        }
+                    } else if (isAfter(document.getElementById(elementId), taskBelow)) {
+                        if (document.getElementById(elementId).previousSibling === taskBelow) {
+                            addTaskDropArea(taskBelow.id)
+                            draggedTask.remove()
+                        } else {
+                            addTaskDropArea(taskBelow.id)
+                            draggedTask.remove()
+                        }
                     }
                 }
             } else {
-                if (document.querySelector('.drop-placeholder-task').nextSibling === taskBelow) {
-                    taskBelow.closest('.drop-target').insertBefore(taskBelow, document.querySelector('.drop-placeholder-task'))
-                } else if (document.querySelector('.drop-placeholder-task').previousSibling === taskBelow) {
-                    document.querySelector('.drop-placeholder-task').insertAdjacentElement('afterend', taskBelow)
+                if (isBefore(document.querySelector('.drop-placeholder-task'), taskBelow)) {
+                    if (document.querySelector('.drop-placeholder-task').nextSibling === taskBelow) {
+                        taskBelow.closest('.drop-target').insertBefore(taskBelow, document.querySelector('.drop-placeholder-task'))
+                    } else {
+                        taskBelow.closest('.drop-target').insertBefore(taskBelow, document.querySelector('.drop-placeholder-task'))
+                    }    
+                } else if (isAfter(document.querySelector('.drop-placeholder-task'), taskBelow)) {
+                    if (document.querySelector('.drop-placeholder-task').previousSibling === taskBelow) {
+                        document.querySelector('.drop-placeholder-task').insertAdjacentElement('afterend', taskBelow)
+                    } else {
+                        document.querySelector('.drop-placeholder-task').insertAdjacentElement('afterend', taskBelow)
+                    }
                 }
             }
         }
     })
+})
 
-    task.closest('.stage').addEventListener('dragleave', (event) => {
-        //if (event.target)
-        console.log('event.target')
+document.querySelectorAll('.stage').forEach(stage => {
+    stage.addEventListener('dragenter', (event) => {
+        if (!event.target.classList.contains('task') 
+        && !event.target.classList.contains('task-text')
+        && !event.target.classList.contains('drop-placeholder-task')
+        && !event.target.classList.contains('drop-target')) {
+            if (!stage.querySelector('.drop-placeholder-task')) {
+                console.log(stage.querySelector('.drop-placeholder-task'))
+                if (document.querySelector('.drop-placeholder-task')) {
+                    document.querySelector('.drop-placeholder-task').remove()
+                }
+                
+                if (document.getElementById(elementId)) {
+                    document.getElementById(elementId).remove()
+                }
+    
+                const dropzoneDiv = document.createElement("div")
+    
+                dropzoneDiv.classList.add('drop-placeholder-task')
+    
+                const dropTarget = stage.querySelector('.drop-target')
+    
+                dropTarget.appendChild(dropzoneDiv) 
+            }   
+        }
     })
-
-
 })
 
 const newStage = document.querySelector('.new-stage-container')

@@ -75,6 +75,8 @@ i {
     width: 200px;
     border-radius: 10px;
     margin: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
 
     /* Colour */
     color: black;
@@ -101,7 +103,8 @@ i {
     width: 190px;
     height: 30px;
     border-radius: 10px;
-    margin: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 
     /* Colour */
     color: black;
@@ -113,6 +116,11 @@ i {
     padding-left: 5px;
 }
 
+.drop-target {
+    /* Display */
+    width: 190px;
+}
+
 .drop-placeholder-task {
     /* Display */
     display: flex;
@@ -120,7 +128,8 @@ i {
     width: 190px;
     height: 30px;
     border-radius: 10px;
-    margin: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 
     /* Colour */
     color: black;

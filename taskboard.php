@@ -84,10 +84,8 @@ if (isset($_POST)) {
 </head>
 <body>
     <header>
-        <h3 class="title">My To-Do List</h3>
+        <h3 class="title">Taskboard 1</h3>
         <a href="createTaskboard.php">New Taskboard</a>
-        <a href="viewTaskboards.php">View Taskboards</a>
-        <a href="login.php">Login</a>
         <a href="index.php">Home</a>
     </header>
 
