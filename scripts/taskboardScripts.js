@@ -52,6 +52,25 @@ function drop(event) {
     placeholder.remove()
 
     isDragging = false
+
+    const data = {
+        taskId : draggedTask.id,
+        stageId : draggedTask.closest('.stage').id
+    }
+
+    fetch("taskAPI.php", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json" // Set content type to JSON
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Response from server:", data);
+        // Show success message or handle errors here
+    })
+    .catch(error => console.error("Error:", error));
 }
 
 let isDragging = false
@@ -62,14 +81,6 @@ document.querySelectorAll('.task').forEach(task => {
         draggedTask = document.getElementById(elementId)
 
         isDragging = true
-    })
-
-    task.addEventListener('dragend', () => {
-        const placeholder = document.querySelector('.drop-placeholder-task')
-        placeholder.insertAdjacentElement('afterend', draggedTask)
-        placeholder.remove()
-
-        isDragging = false
     })
 
     task.addEventListener('drag', (event) => {
@@ -136,7 +147,6 @@ document.querySelectorAll('.stage').forEach(stage => {
         && !event.target.classList.contains('drop-placeholder-task')
         && !event.target.classList.contains('drop-target')) {
             if (!stage.querySelector('.drop-placeholder-task')) {
-                console.log(stage.querySelector('.drop-placeholder-task'))
                 if (document.querySelector('.drop-placeholder-task')) {
                     document.querySelector('.drop-placeholder-task').remove()
                 }
@@ -161,6 +171,18 @@ const newStage = document.querySelector('.new-stage-container')
 const newStageExpanded = document.querySelector('.new-stage-expanded-container')
 
 window.addEventListener("click", (event) => {
+    const title = document.querySelector('.title')
+    const titleBox = document.querySelector('.change-title')
+
+    if (event.target.classList.contains('title')) {
+        title.classList.add('hidden')
+        titleBox.classList.remove('hidden')
+        titleBox.focus()
+    } else if (!event.target.classList.contains('change-title')) {
+        title.classList.remove('hidden')
+        titleBox.classList.add('hidden')
+    }
+
     const newStageClicked = event.target.closest('.new-stage-container')
     const newStageExpandedClicked = event.target.closest('.new-stage-expanded-container')
 

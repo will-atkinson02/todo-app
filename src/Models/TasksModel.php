@@ -30,4 +30,10 @@ class TasksModel {
         $query = $this->db->prepare("DELETE FROM `tasks` WHERE `name` = :taskName;");
         return $query->execute(['taskName' => $taskName]);
     }
+
+    public function updateTask(int $taskId , int $stageId): bool 
+    {
+        $query = $this->db->prepare("UPDATE `tasks` SET `stage_id` = :stageId WHERE `id` = :taskId;");
+        return $query->execute(['stageId' => $stageId, 'taskId' => $taskId]);
+    }
 }

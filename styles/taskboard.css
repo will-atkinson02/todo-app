@@ -19,6 +19,22 @@ header {
 .title {
     /* Display */
     padding-left: 20px;
+
+    /* Text */
+    font-size: 20px;
+}
+
+.change-title {
+    /* Display */
+    margin: 20px 0 20px 20px;
+    border: solid white 2px;
+
+    /* Colour */
+    color: white;
+    background-color: black;
+
+    /* Text */
+    font-size: 20px;
 }
 
 .container-container{

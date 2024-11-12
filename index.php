@@ -17,7 +17,7 @@ $taskboardModel = new TaskboardsModel($db);
 
 session_start();
 
-$taskBoards = $taskboardModel->getUsersTaskboards($_SESSION['uid']);
+
 
 if(isset($_POST['logout'])) {
     $_SESSION['loggedIn'] = false;
@@ -26,6 +26,7 @@ if(isset($_POST['logout'])) {
 }
 
 if(isset($_SESSION['loggedIn'])) {
+    $taskBoards = $taskboardModel->getUsersTaskboards($_SESSION['uid']);
     //$addNewPost = "<div class='add-new-container'><a href='CreateNewPost.php'> <span>+</span> Add new post</a></div>";
     $logout = "<form method='post'><input type='submit' name='logout' value='logout'/></form>";
     $user = $usersModel->getUserById($_SESSION['uid']);
@@ -67,9 +68,9 @@ if(isset($_SESSION['loggedIn'])) {
     
     ?> to your home page!<h1>
     <?php
-
-    echo DisplayTaskboardsService::showUsersTaskboards($taskBoards);
-
+    if (isset($taskBoards)) {
+        echo DisplayTaskboardsService::showUsersTaskboards($taskBoards);
+    }
     ?>
 </body>
 </html>

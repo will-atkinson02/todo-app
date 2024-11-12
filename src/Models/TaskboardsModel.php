@@ -7,7 +7,7 @@ class TaskboardsModel {
 
     public function __construct(PDO $db)
     {
-        $this->db = $db;
+        $this->db = $db; 
     }
 
     public function getUsersTaskboards(int $userId): array
@@ -17,5 +17,14 @@ class TaskboardsModel {
         $query->setFetchMode(PDO::FETCH_CLASS, Taskboard::class);
         $query->execute(['userId' => $userId]);
         return $query->fetchAll();
+    }
+
+    public function getTaskboardById(int $taskboardId): Taskboard
+    {
+        $query = $this->db->prepare('SELECT `id`, `taskboard_name`, `user_id` FROM `taskboards` 
+        WHERE `id` = :taskboardId');
+        $query->setFetchMode(PDO::FETCH_CLASS, Taskboard::class);
+        $query->execute(['taskboardId' => $taskboardId]);
+        return $query->fetch();
     }
 }

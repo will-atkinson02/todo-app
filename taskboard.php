@@ -2,18 +2,25 @@
 
 require_once 'src/Models/StagesModel.php';
 require_once 'src/Models/TasksModel.php';
+require_once 'src/Models/TaskboardsModel.php';
 require_once 'src/Entities/Stage.php';
 require_once 'src/Entities/Task.php';
+require_once 'src/Entities/Taskboard.php';
 require_once 'src/Services/DatabaseConnector.php';
 
 $db = DatabaseConnector::connect();
 
 $stagesModel = new StagesModel($db);
 $tasksModel = new TasksModel($db);
+$taskboardsModel = new TaskboardsModel($db);
 
 session_start();
 
 $taskboardId = (int)$_GET['id'];
+
+$taskboard = $taskboardsModel->getTaskboardById($taskboardId);
+
+$taskboardName = $taskboard->getTaskboardName();
 
 if (array_key_exists('stageName', $_POST)) {
     if ($_POST['stageName'] != '') {
@@ -84,7 +91,8 @@ if (isset($_POST)) {
 </head>
 <body>
     <header>
-        <h3 class="title">Taskboard 1</h3>
+        <h3 class="title"><?php echo $taskboardName; ?></h3>
+        <input class="change-title hidden" type="text" value=<?php echo $taskboardName; ?>>
         <a href="createTaskboard.php">New Taskboard</a>
         <a href="index.php">Home</a>
     </header>
@@ -98,15 +106,10 @@ if (isset($_POST)) {
 
         foreach ($allStages as $stage) {
             $name = $stage->stageName();
-            $stages .= "<div class='stage' ondrop='drop(event)' ondragover='allowDrop(event)'><form method='POST' class='name-and-delete'><div>$name</div><input class='deleteStage' name='$name' type='submit' value='deleteStage'></form><div class='drop-target'>";
-            
             $stageId = $stage->getId();
+            $stages .= "<div class='stage' id=$stageId ondrop='drop(event)' ondragover='allowDrop(event)'><form method='POST' class='name-and-delete'><div>$name</div><input class='deleteStage' name='$name' type='submit' value='deleteStage'></form><div class='drop-target'>";
 
             $allTasks = $tasksModel->getStagesTasks($stageId);
-
-            // echo '<pre>';
-            // var_dump($allTasks);    
-            
 
             foreach ($allTasks as $task) {
                 $taskName = $task->getName();
